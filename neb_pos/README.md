@@ -53,6 +53,19 @@ A nice animation is displayed when converting unique files, as the process can t
 
 If you don't like it, remove the decorator in `script.py` and you won't need the `animation.py` file anymore.
 
+Most code is for the CLI, while the actually reusable python code is just:
+
+```py
+def create_pos(in_file, out_file): 
+    system = ase.io.read(in_file, format="lammps-data", style="atomic") 
+    values = np.hstack([system.arrays["id"].reshape(-1, 1), system.positions]) 
+    np.savetxt(out_file, 
+               values, 
+               fmt=['%d', '%.18e', '%.18e', '%.18e'], 
+               comments='', 
+               header=str(values.shape[0])) 
+```
+
 ## Help
 
 
