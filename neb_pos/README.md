@@ -5,9 +5,13 @@ Tool to convert lammps-data files (those written with the `write_data` command) 
 
 ## Features
 
+- Convert a single file, to a specified name.
+
 - Support for multiple files is provided in the form of glob expressions. 
 
 - Preserves the id of atoms found in the lammps-data file.
+
+- Avoids overriding existing files by default.
 
 ## General Usage
 
@@ -43,6 +47,11 @@ For safety, the script cannot override existing files by default. If needed, use
 python3 script.py "test/neb_knot_file_out.*" --force -s dat
 ```
 
+## Additional notes
+
+A nice animation is displayed when converting unique files, as the process can take a few seconds for large files. 
+
+If you don't like it, remove the decorator in `script.py` and you won't need the `animation.py` file anymore.
 
 ## Help
 
