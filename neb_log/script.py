@@ -1,4 +1,5 @@
 import numpy as np
+import re, yaml
 
 def extract_neb_profile(file: str) -> np.ndarray:
     """
@@ -21,3 +22,36 @@ def extract_neb_profile(file: str) -> np.ndarray:
     profiles = data[:, 9:].reshape((data.shape[0], num_replicas, 2))  # Reshape as (n_steps, n_replica, 2) 
   
     return profiles
+
+def parse_loglammps_yaml(file: str) -> list:
+    """
+    Parses thermo data from a LAMMPS log file formatted with YAML output.
+
+    This function is specifically designed to handle log files generated when the
+    `thermo_modify line yaml format none` keyword is used in LAMMPS.
+    
+    This Python code snippet was taken from LAMMPS documentation.
+
+    Args:
+        file (str): The path to the LAMMPS log file with YAML formatted thermo data.
+
+    Returns:
+        list: A list of dictionaries, where each dictionary represents a single
+              thermo data block from the log file. The structure of the dictionaries
+              depends on the specific LAMMPS settings used during the simulation.
+    """
+
+    
+    try:
+        from yaml import CSafeLoader as Loader
+    except ImportError:
+        from yaml import SafeLoader as Loader
+
+    docs = ""
+    with open(file, "r") as f:
+        for line in f:
+            m = re.search(r"^(keywords:.*$|data:$|---$|\.\.\.$|  - \[.*\]$)", line)
+            if m: docs += m.group(0) + '\n'
+
+    thermo = list(yaml.load_all(docs, Loader=Loader))
+    return thermo
