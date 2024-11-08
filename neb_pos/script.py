@@ -59,6 +59,6 @@ if __name__ == "__main__":
     args = parser.parse_args() 
  
     if not "*" in args.input: 
-        convert_single_file(args.input, args.output, force) 
+        convert_single_file(args.input, args.output, args.force) 
     else:
         convert_multiple_files(args.input, args.suffix, args.append_suffix, args.force) 
