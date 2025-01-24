@@ -55,3 +55,17 @@ def parse_loglammps_yaml(file: str) -> list:
 
     thermo = list(yaml.load_all(docs, Loader=Loader))
     return thermo
+
+def get_final_prop(file, property='TotEng'):
+    """Extracts the end value of the selected property from a LAMMPS log file, for each run in the logfile.
+
+    Args:
+        file (str): Path to the LAMMPS log file.
+
+    Returns:
+        float: Final total energy.
+    """
+    
+    from lammps import formats
+    lf = lammps.formats.LogFile(file)
+    return [r[property][-1] for r in lf.runs]
