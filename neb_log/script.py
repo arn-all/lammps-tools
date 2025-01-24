@@ -66,6 +66,7 @@ def get_final_prop(file, property='TotEng'):
         float: Final total energy.
     """
     
-    from lammps import formats
+    import lammps
+    import lammps.formats
     lf = lammps.formats.LogFile(file)
     return [r[property][-1] for r in lf.runs]
