@@ -69,4 +69,4 @@ def get_final_prop(file, property='TotEng'):
     import lammps
     import lammps.formats
     lf = lammps.formats.LogFile(file)
-    return [r[property][-1] for r in lf.runs]
+    return np.array([r[property][-1] for r in lf.runs])
